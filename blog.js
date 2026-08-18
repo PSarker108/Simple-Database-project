@@ -42,9 +42,15 @@ export async function viewUserBlogs(userId) {
   console.log('\nYour blogs:');
 
   blogs.forEach((item) => {
-    console.log(
-      `ID: ${item.id} | Title: ${item.blogTitle}`
-    );
+    console.log(`
+Blog ID: ${item.id}
+Title: ${item.blogTitle}
+Category: ${item.category}
+Content: ${item.blog}
+Created: ${item.createAt}
+Updated: ${item.updateAt}
+------------------------------
+`);
   });
 
   return blogs;
@@ -68,6 +74,42 @@ export async function allBlog() {
     console.log(
       `ID: ${item.id} | User ID: ${item.userId} | Title: ${item.blogTitle} | Category: ${item.category}`
     );
+  });
+
+  return blogs;
+}
+
+//---------------- viewAllBlogsWithContent ----------------
+
+export async function viewAllBlogsWithContent() {
+  const blogs = await Blog.findAll({
+    include: {
+      model: User,
+      attributes: [
+        'firstname',
+        'lastname'
+      ]
+    },
+    order: [['id', 'ASC']]
+  });
+
+  if (blogs.length === 0) {
+    console.log('No blogs are found');
+    return [];
+  }
+
+  console.log('\nAll blogs:');
+
+  blogs.forEach((item) => {
+    console.log(`
+Blog ID: ${item.id}
+Author: ${item.User.firstname} ${item.User.lastname}
+Title: ${item.blogTitle}
+Category: ${item.category}
+Content: ${item.blog}
+Created: ${item.createAt}
+------------------------------
+`);
   });
 
   return blogs;

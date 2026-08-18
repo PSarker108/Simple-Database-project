@@ -17,7 +17,8 @@ import {
   updateBlog,
   deleteBlog,
   allUsersBlog,
-  adminDeleteBlog
+  adminDeleteBlog,
+  viewAllBlogsWithContent
 } from './blog.js';
 
 import {
@@ -94,11 +95,12 @@ async function userMenu(user) {
 ========== User Menu ==========
 
 1. View Your Blogs
-2. Search Blog by ID/Title
-3. Create Blog
-4. Update Blog
-5. Delete Blog
-6. Logout
+2. View All Blogs
+3. Search Blog by ID/Title
+4. Create Blog
+5. Update Blog
+6. Delete Blog
+7. Logout
 `);
 
     const choice = await ask('Choose an option: ');
@@ -109,7 +111,11 @@ async function userMenu(user) {
         await viewUserBlogs(user.id);
         break;
 
-      case '2': {
+      case '2':
+        await viewAllBlogsWithContent();
+        break;
+
+      case '3': {
         const query = await ask(
           'Enter Blog ID or Title: '
         );
@@ -118,19 +124,19 @@ async function userMenu(user) {
         break;
       }
 
-      case '3':
+      case '4':
         await handleCreateBlog(user);
         break;
 
-      case '4':
+      case '5':
         await handleUpdateBlog(user);
         break;
 
-      case '5':
+      case '6':
         await handleDeleteBlog(user);
         break;
 
-      case '6':
+      case '7':
         console.log('Logged out successfully.');
         return;
 
@@ -384,7 +390,7 @@ async function mainMenu() {
     switch (choice) {
 
       case '1':
-        await allBlog();
+        await viewAllBlogsWithContent();
         break;
 
       case '2':
